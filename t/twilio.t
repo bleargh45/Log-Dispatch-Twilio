@@ -20,7 +20,7 @@ unless ($ENV{TWILIO_FROM}) {
 unless ($ENV{TWILIO_TO}) {
     plan skip_all => "TWILIO_TO must be set in your environment for testing.";
 }
-plan tests => 7;
+plan tests => 8;
 
 ###############################################################################
 ### TEST PARAMETERS
@@ -90,5 +90,10 @@ logging_test: {
             ],
         ],
     );
+
+    my @messages;
+    local $SIG{__WARN__} = sub { push @messages, @_ };
     $logger->info("test message, logged via Twilio");
+
+    ok !@messages, 'Message logged via Twilio';
 }
