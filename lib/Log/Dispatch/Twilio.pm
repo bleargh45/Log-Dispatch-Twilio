@@ -8,7 +8,7 @@ use List::Util qw(min);
 use POSIX qw(ceil);
 use WWW::Twilio::API;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our $MAX_TWILIO_LENGTH = 160;   # max length of SMS message allowed by Twilio
 
 sub new {
