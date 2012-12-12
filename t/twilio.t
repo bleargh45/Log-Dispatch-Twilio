@@ -20,7 +20,7 @@ unless ($ENV{TWILIO_FROM}) {
 unless ($ENV{TWILIO_TO}) {
     plan skip_all => "TWILIO_TO must be set in your environment for testing.";
 }
-plan tests => 12;
+plan tests => 18;
 
 ###############################################################################
 ### TEST PARAMETERS
@@ -99,7 +99,7 @@ logging_test: {
 }
 
 ###############################################################################
-# Long messages are truncated by default
+# Long messages are truncated by default (and at the correct point).
 truncate_by_default: {
     my $logger = Log::Dispatch::Twilio->new(
         name      => 'twilio',
@@ -107,18 +107,16 @@ truncate_by_default: {
         %params,
     );
 
-    my $message
-        = "This is a really long test message, so that I can verify that we "
-        . "properly truncate it at 160 chars.  Only one message should be "
-        . "sent to Twilio when I send this lengthy statement; it'd be "
-        . "truncated automatically.";
-
+    local $Log::Dispatch::Twilio::MAX_TWILIO_LENGTH = 10;
+    my $message  = '1234567890abcdefghijklmnop';
     my @expanded = $logger->_expand_message($message);
     is @expanded, 1, 'Long message auto-truncated by default';
+    is $expanded[0], '1234567890', '... and truncated at correct point';
 }
 
 ###############################################################################
-# Long messages can be exploded out to multiple messages.
+# Long messages can be exploded out to multiple messages, each being truncated
+# at the correct point.
 multiple_messages: {
     my $logger = Log::Dispatch::Twilio->new(
         name         => 'twilio',
@@ -127,16 +125,31 @@ multiple_messages: {
         %params,
     );
 
-    my $message
-        = "This message is also really long.  This one helps test that we can "
-        . "properly slice up the log message across multiple SMS messages, "
-        . "even when its too big to fit.  Further, if we have more text than "
-        . "we can fit into the configured number of SMS messages, the rest "
-        . "just gets truncated and is gone.  No muss, no fuss, no extra "
-        . "messages getting generated for no reason.";
-
+    local $Log::Dispatch::Twilio::MAX_TWILIO_LENGTH = 10;
+    my $message  = '1234567890abcdefghijklmnop';
     my @expanded = $logger->_expand_message($message);
     is @expanded, 2, 'Long message truncated to max number of messages';
+    is $expanded[0], '1/2: 12345', '... first message truncated to length';
+    is $expanded[1], '2/2: 67890', '... second message truncated to length';
+}
+
+###############################################################################
+# Long messages can be exploded and truncated, if it generates less than max
+# messages.
+truncate_subsequent_message: {
+    my $logger = Log::Dispatch::Twilio->new(
+        name         => 'twilio',
+        min_level    => 'debug',
+        max_messages => 2,
+        %params,
+    );
+
+    local $Log::Dispatch::Twilio::MAX_TWILIO_LENGTH = 15;
+    my $message  = '1234567890abcdefg';
+    my @expanded = $logger->_expand_message($message);
+    is @expanded, 2, 'Long message truncated to max number of messages';
+    is $expanded[0], '1/2: 1234567890', '... first message truncated to length';
+    is $expanded[1], '2/2: abcdefg', '... second message complete';
 }
 
 ###############################################################################
