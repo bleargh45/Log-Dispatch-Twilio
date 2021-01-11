@@ -84,8 +84,8 @@ sub _expand_message {
         my $num_messages      = min($max, ceil($msg_length / $how_much));
 
         # Create entries w/prefixes
-        for my $idx (1 .. $max) {
-            my $prefix = "$idx/$max: ";
+        for my $idx (1 .. $num_messages) {
+            my $prefix = "$idx/$num_messages: ";
             my $entry = substr($msg, 0, $how_much, '');
             $entry =~ s{^\s+|\s+$}{}g;  # trim leading/trailing ws
             push @results, $prefix . $entry;

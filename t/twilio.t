@@ -140,7 +140,7 @@ truncate_subsequent_message: {
     my $logger = Log::Dispatch::Twilio->new(
         name         => 'twilio',
         min_level    => 'debug',
-        max_messages => 2,
+        max_messages => 3,
         %params,
     );
 
