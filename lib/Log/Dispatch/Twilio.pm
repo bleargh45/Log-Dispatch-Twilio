@@ -113,7 +113,7 @@ Log::Dispatch::Twilio - Log output via Twilio SMS Message
 
   my $logger = Log::Dispatch->new(
       outputs => [
-          [ 'Twilio,
+          [ 'Twilio',
             min_level   => 'emergency',
             account_sid => '<your-twilio-account-sid>',
             auth_token  => '<your-twilio-auth-token>',
