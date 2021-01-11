@@ -9,7 +9,7 @@ use POSIX qw(ceil);
 use WWW::Twilio::API;
 use namespace::clean;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 our $MAX_TWILIO_LENGTH = 160;   # max length of SMS message allowed by Twilio
 
 sub new {
