@@ -104,6 +104,8 @@ sub _expand_message {
 
 1;
 
+=for stopwords SMS Auth
+
 =head1 NAME
 
 Log::Dispatch::Twilio - Log output via Twilio SMS Message

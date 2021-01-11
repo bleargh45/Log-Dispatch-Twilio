@@ -3,7 +3,7 @@ Revision history for Perl extension Log::Dispatch::Twilio
 {{$NEXT}}
     - Augment tests to ensure we split/truncate at correct position
     - Switch to Dist::Zilla for release management
-    - POD fixups; synopsis
+    - POD fixups; synopsis, spelling
     - Fix message truncation/splitting, when message is too long
       - was generating "max_messages" messages, even if less would suffice
     - Ensure our namespace is kept clean
