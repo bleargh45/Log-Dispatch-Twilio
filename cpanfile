@@ -1,4 +1,4 @@
-requires 'perl', '>= 5.008';
+requires 'perl', '>= 5.010001';
 requires 'HTTP::Status';
 requires 'Log::Dispatch';
 requires 'namespace::clean';
