@@ -1,6 +1,8 @@
 Revision history for Perl extension Log::Dispatch::Twilio
 
 {{$NEXT}}
+
+0.03      2021-01-10 23:31:32-08:00 America/Vancouver
     - Augment tests to ensure we split/truncate at correct position
     - Switch to Dist::Zilla for release management
     - POD fixups; synopsis, spelling
