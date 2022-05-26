@@ -52,7 +52,7 @@ sub log_message {
 
     my @to_send = $self->_expand_message($msg{message});
     foreach my $entry (@to_send) {
-        my $res = $twilio->POST('SMS/Messages',
+        my $res = $twilio->POST('Messages',
             From => $self->{from},
             To   => $self->{to},
             Body => $entry,
